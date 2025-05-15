@@ -1,0 +1,27 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main  # 每次推送到 main 分支时触发部署
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # 根据你的项目设置 Node.js 版本
+
+      - name: Install dependencies
+        run: npm install  # 如果你使用的是 npm，改为 yarn install 如果使用 yarn
+
+      - name: Deploy to Vercel
+        run: |
+          curl -fsSL https://vercel.com/download | bash
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
